@@ -1,26 +1,16 @@
 #include <stdio.h>
 #include "helpers/vector.h"
+#include "compiler.h"
 
 int main() {
-  struct vector* vec = vector_create(sizeof(int));
-  int x = 50;
+  int res = compile_file("./test.c", "./test", 0);
 
-  vector_push(vec, &x);
-  x = 20;
-
-  vector_push(vec, &x);
-
-  // pop off the 20
-  vector_pop(vec);
-
-  // Peek into vector
-  vector_set_peek_pointer(vec, 0);
-
-  int* ptr = vector_peek(vec);  // returns value push to stack
-
-  while(ptr) {
-    printf("%i\n", *ptr);
-    ptr = vector_peek(vec);
+  if (res == COMPILER_FILE_COMPILED_OK) {
+    printf("Compilation successful.\n");
+  } else if (res == COMPILER_FAILED_WITH_ERRORS) {
+    printf("Compilation failed...\n");
+  } else {
+    printf("Unknown response for compile file...\n");
   }
   
   return 0;
